@@ -1,0 +1,349 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>India Travel & Tourism Guide</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:#f4f4f4;
+}
+
+header{
+    background:linear-gradient(45deg,#ff6a00,#ee0979);
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+
+header h1{
+    margin-bottom:10px;
+}
+
+.search-box{
+    text-align:center;
+    margin:20px;
+}
+
+.search-box input{
+    width:80%;
+    max-width:600px;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:16px;
+}
+
+.container{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    padding:20px;
+}
+
+.card{
+    width:300px;
+    background:white;
+    margin:15px;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card img{
+    width:100%;
+    height:200px;
+    object-fit:cover;
+}
+
+.card-content{
+    padding:15px;
+}
+
+.card-content h3{
+    margin-bottom:10px;
+    color:#333;
+}
+
+.card-content p{
+    margin-bottom:8px;
+    color:#555;
+}
+
+.price{
+    color:green;
+    font-weight:bold;
+}
+
+.button{
+    display:inline-block;
+    padding:8px 12px;
+    margin-top:8px;
+    margin-right:5px;
+    text-decoration:none;
+    color:white;
+    background:#ff6a00;
+    border-radius:5px;
+    font-size:13px;
+}
+
+.map-btn{
+    background:#007bff;
+}
+
+footer{
+    background:#222;
+    color:white;
+    text-align:center;
+    padding:20px;
+    margin-top:20px;
+}
+
+.no-result{
+    text-align:center;
+    font-size:22px;
+    color:red;
+    margin-top:30px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>India Travel & Tourism Guide</h1>
+    <p>Search Places + Hotels + Food + Google Maps</p>
+</header>
+
+<div class="search-box">
+    <input type="text" id="search" placeholder="Search any place like Goa, Manali, Jaipur...">
+</div>
+
+<div class="container" id="places"></div>
+
+<footer>
+    <p>Made for BCA Project | Travel & Tourism Website</p>
+</footer>
+
+<script>
+
+const places = [
+
+{
+name:"Taj Mahal, Agra",
+img:"https://cdn.britannica.com/97/156497-050-6D9D0F09/Taj-Mahal-at-sunset-India.jpg",
+desc:"Symbol of love built by Shah Jahan.",
+cost:"₹15,000 (2 persons)",
+hotel:"https://www.booking.com/searchresults.html?ss=Agra+hotels",
+food:"https://www.zomato.com/agra"
+},
+
+{
+name:"Goa Beaches",
+img:"https://touristmeetstraveler.com/wp-content/uploads/goa-beach.jpg",
+desc:"Beaches, nightlife and water sports.",
+cost:"₹25,000 (2 persons)",
+hotel:"https://www.booking.com/searchresults.html?ss=Goa+hotels",
+food:"https://www.zomato.com/goa"
+},
+
+{
+name:"Manali",
+img:"https://i.pinimg.com/originals/84/ed/16/84ed165239f3e217d6ffb72a266d15a4.jpg",
+desc:"Snow mountains and adventure sports.",
+cost:"₹20,000 (2 persons)",
+hotel:"https://www.booking.com/searchresults.html?ss=Manali+hotels",
+food:"https://www.zomato.com/manali"
+},
+
+{
+name:"Jaipur",
+img:"https://wallpapers.com/images/hd/beautiful-facade-hawa-mahal-jaipur-jyve6dza8i2esdk4.jpg",
+desc:"Pink City with royal heritage.",
+cost:"₹18,000 (2 persons)",
+hotel:"https://www.booking.com/searchresults.html?ss=Jaipur+hotels",
+food:"https://www.zomato.com/jaipur"
+},
+
+{
+name:"Kerala",
+img:"https://amazingadventures.in/wp-content/uploads/2020/02/wp2894162.jpg",
+desc:"Backwaters and houseboats.",
+cost:"₹28,000 (2 persons)",
+hotel:"https://www.booking.com/searchresults.html?ss=Kerala+hotels",
+food:"https://www.zomato.com/kochi"
+},
+
+{
+name:"Leh Ladakh",
+img:"https://www.indiatravel.app/wp-content/uploads/2024/04/leh-ladakh-tourism.jpg",
+desc:"High mountains and bikes.",
+cost:"₹35,000 (2 persons)",
+hotel:"https://www.booking.com/searchresults.html?ss=Leh+hotels",
+food:"https://www.zomato.com/leh"
+},
+
+{
+name:"Delhi",
+img:"https://wallpaperaccess.com/full/1896368.jpg",
+desc:"Capital city with monuments.",
+cost:"₹20,000 (2 persons)",
+hotel:"https://www.booking.com/searchresults.html?ss=Delhi+hotels",
+food:"https://www.zomato.com/ncr"
+},
+
+{
+name:"Mumbai",
+img:"https://www.andbeyond.com/wp-content/uploads/sites/5/Chhatrapati-Shivaji-Terminus-railway-station-mumbai.jpg",
+desc:"Bollywood & financial capital.",
+cost:"₹30,000 (2 persons)",
+hotel:"https://www.booking.com/searchresults.html?ss=Mumbai+hotels",
+food:"https://www.zomato.com/mumbai"
+},
+
+{
+name:"Varanasi",
+img:"https://i.etsystatic.com/40934795/r/il/4ba8d2/4983753353/il_fullxfull.4983753353_hm2t.jpg",
+desc:"Spiritual city on Ganga.",
+cost:"₹16,000 (2 persons)",
+hotel:"https://www.booking.com/searchresults.html?ss=Varanasi+hotels",
+food:"https://www.zomato.com/varanasi"
+},
+
+{
+name:"Udaipur",
+img:"https://seoimgak.mmtcdn.com/blog/sites/default/files/Udaipur-Hotels-Main-01.jpg",
+desc:"City of lakes and palaces.",
+cost:"₹22,000 (2 persons)",
+hotel:"https://www.booking.com/searchresults.html?ss=Udaipur+hotels",
+food:"https://www.zomato.com/udaipur"
+},
+
+{
+name:"Amritsar, Punjab",
+img:"https://images.alphacoders.com/541/541010.jpg",
+desc:"Famous for Golden Temple, Punjabi culture and Jallianwala Bagh.",
+cost:"₹16,000 (2 persons)",
+hotel:"https://www.booking.com/searchresults.html?ss=Amritsar+hotels",
+food:"https://www.zomato.com/amritsar"
+},
+
+{
+name:"Darjeeling, West Bengal",
+img:"https://siliguritourism.com/wp-content/uploads/2024/01/Darjeeling-West-Bengal.jpg",
+desc:"Tea gardens, Toy Train and Himalayan views.",
+cost:"₹20,000 (2 persons)",
+hotel:"https://www.booking.com/searchresults.html?ss=Darjeeling+hotels",
+food:"https://www.zomato.com/darjeeling"
+},
+
+{
+name:"Mysore, Karnataka",
+img:"https://wallpaperaccess.com/full/8430940.jpg",
+desc:"Known for Mysore Palace and Dasara Festival.",
+cost:"₹18,000 (2 persons)",
+hotel:"https://www.booking.com/searchresults.html?ss=Mysore+hotels",
+food:"https://www.zomato.com/mysore"
+},
+
+{
+name:"Rishikesh, Uttarakhand",
+img:"https://www.thehosteller.com/_next/image/?url=https://static.thehosteller.com/hostel/images/1.jpg/1-1682330632795.jpg&w=2048&q=75",
+desc:"Yoga Capital of the World and river rafting destination.",
+cost:"₹14,000 (2 persons)",
+hotel:"https://www.booking.com/searchresults.html?ss=Rishikesh+hotels",
+food:"https://www.zomato.com/rishikesh"
+},
+
+{
+name:"Andaman & Nicobar Islands",
+img:"https://www.sostravelhouse.com/public/uploads/images/location/67beb119e307f.webp",
+desc:"Crystal-clear beaches, scuba diving and Cellular Jail.",
+cost:"₹45,000 (2 persons)",
+hotel:"https://www.booking.com/searchresults.html?ss=Andaman+hotels",
+food:"https://www.zomato.com/port-blair"
+}
+
+];
+
+function display(data){
+
+    const container = document.getElementById("places");
+
+    if(data.length === 0){
+        container.innerHTML = "<div class='no-result'>No Places Found</div>";
+        return;
+    }
+
+    container.innerHTML = "";
+
+    data.forEach(p => {
+
+        container.innerHTML += `
+        <div class="card">
+
+            <img src="${p.img}" alt="${p.name}" loading="lazy">
+
+            <div class="card-content">
+
+                <h3>${p.name}</h3>
+
+                <p>${p.desc}</p>
+
+                <p class="price">${p.cost}</p>
+
+                <a class="button" href="${p.hotel}" target="_blank">
+                    Hotels
+                </a>
+
+                <a class="button" href="${p.food}" target="_blank">
+                    Food
+                </a>
+
+                <a class="button map-btn"
+                href="https://www.google.com/maps/search/${encodeURIComponent(p.name)}"
+                target="_blank">
+                    Map
+                </a>
+
+            </div>
+
+        </div>
+        `;
+    });
+}
+
+display(places);
+
+document.getElementById("search").addEventListener("keyup", function(){
+
+    let value = this.value.toLowerCase();
+
+    let filtered = places.filter(place =>
+        place.name.toLowerCase().includes(value) ||
+        place.desc.toLowerCase().includes(value)
+    );
+
+    display(filtered);
+
+});
+
+</script>
+
+</body>
+</html>
+```
